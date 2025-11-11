@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-app-v1
+  namespace: hello-gitops
+spec:
+  replicas: 3 # set total number or replicas
+  selector:
+    matchLabels:
+      app: hello-app
+      version: v1.0.0
+  template:
+    metadata:
+      labels:
+        app: hello-app
+        version: v1.0.0
+    spec:
+      containers:
+        - name: hello-app
+          image: d1zer99/hello-world-gitops:v.1
+          ports:
+            - name: http
+              containerPort: 8050
+          volumeMounts:
+            - name: config
+              mountPath: /app/config.properties
+              subPath: config.properties
+      volumes:
+        - name: config
+          configMap:
+            name: hello-app-config-v1
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hello-app-config-v1
+  namespace: hello-gitops
+data:
+  config.properties: |
+    [features]
+    feature_1=True
+    feature_2=False
+    feature_3=True
