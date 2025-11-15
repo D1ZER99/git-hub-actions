@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: write
+
 env:
   DOCKER_REGISTRY: docker.io
   DOCKER_USERNAME: d1zer99
@@ -72,6 +75,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # use default github token
 
       - name: Install kubectl
         uses: azure/setup-kubectl@v1
