@@ -1,0 +1,198 @@
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      autopilot.gke.io/resource-adjustment: '{"input":{"containers":[{"name":"hello-app"}]},"output":{"containers":[{"limits":{"ephemeral-storage":"1Gi"},"requests":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"name":"hello-app"}]},"computeClassAtAdmission":"Default","modified":true}'
+      autopilot.gke.io/warden-version: 33.33.20-gke.1
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"hello-app-v1","namespace":"hello-gitops"},"spec":{"replicas":3,"selector":{"matchLabels":{"app":"hello-app","version":"v1.0.0"}},"template":{"metadata":{"labels":{"app":"hello-app","version":"v1.0.0"}},"spec":{"containers":[{"image":"d1zer99/hello-world-gitops:v.1","name":"hello-app","ports":[{"containerPort":8050,"name":"http"}],"volumeMounts":[{"mountPath":"/app/config.properties","name":"config","subPath":"config.properties"}]}],"volumes":[{"configMap":{"name":"hello-app-config-v1"},"name":"config"}]}}}}
+    creationTimestamp: "2025-11-15T09:44:24Z"
+    generation: 1
+    name: hello-app-v1
+    namespace: hello-gitops
+    resourceVersion: "1763199931774767020"
+    uid: adda0874-3593-4415-a078-9f83dcfa8f62
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 3
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: hello-app
+        version: v1.0.0
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: hello-app
+          version: v1.0.0
+      spec:
+        containers:
+        - image: d1zer99/hello-world-gitops:v.1
+          imagePullPolicy: IfNotPresent
+          name: hello-app
+          ports:
+          - containerPort: 8050
+            name: http
+            protocol: TCP
+          resources:
+            limits:
+              ephemeral-storage: 1Gi
+            requests:
+              cpu: 500m
+              ephemeral-storage: 1Gi
+              memory: 2Gi
+          securityContext:
+            capabilities:
+              drop:
+              - NET_RAW
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /app/config.properties
+            name: config
+            subPath: config.properties
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          seccompProfile:
+            type: RuntimeDefault
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - effect: NoSchedule
+          key: kubernetes.io/arch
+          operator: Equal
+          value: amd64
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: hello-app-config-v1
+          name: config
+  status:
+    availableReplicas: 3
+    conditions:
+    - lastTransitionTime: "2025-11-15T09:45:31Z"
+      lastUpdateTime: "2025-11-15T09:45:31Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-11-15T09:44:24Z"
+      lastUpdateTime: "2025-11-15T09:45:31Z"
+      message: ReplicaSet "hello-app-v1-5d8ccb75f6" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 3
+    replicas: 3
+    updatedReplicas: 3
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      autopilot.gke.io/resource-adjustment: '{"input":{"containers":[{"name":"hello-app"}]},"output":{"containers":[{"limits":{"ephemeral-storage":"1Gi"},"requests":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"name":"hello-app"}]},"computeClassAtAdmission":"Default","modified":true}'
+      autopilot.gke.io/warden-version: 33.33.20-gke.1
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"hello-app-v2","namespace":"hello-gitops"},"spec":{"replicas":3,"selector":{"matchLabels":{"app":"hello-app","version":"v2.0.0"}},"template":{"metadata":{"labels":{"app":"hello-app","version":"v2.0.0"}},"spec":{"containers":[{"image":"d1zer99/hello-world-gitops:v.2","name":"hello-app","ports":[{"containerPort":8050,"name":"http"}],"volumeMounts":[{"mountPath":"/app/config.properties","name":"config","subPath":"config.properties"}]}],"volumes":[{"configMap":{"name":"hello-app-config-v2"},"name":"config"}]}}}}
+    creationTimestamp: "2025-11-15T09:55:34Z"
+    generation: 1
+    name: hello-app-v2
+    namespace: hello-gitops
+    resourceVersion: "1763200543562223003"
+    uid: 10d297db-8279-49f4-8029-529e1cf8d2d5
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 3
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: hello-app
+        version: v2.0.0
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: hello-app
+          version: v2.0.0
+      spec:
+        containers:
+        - image: d1zer99/hello-world-gitops:v.2
+          imagePullPolicy: IfNotPresent
+          name: hello-app
+          ports:
+          - containerPort: 8050
+            name: http
+            protocol: TCP
+          resources:
+            limits:
+              ephemeral-storage: 1Gi
+            requests:
+              cpu: 500m
+              ephemeral-storage: 1Gi
+              memory: 2Gi
+          securityContext:
+            capabilities:
+              drop:
+              - NET_RAW
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /app/config.properties
+            name: config
+            subPath: config.properties
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          seccompProfile:
+            type: RuntimeDefault
+        terminationGracePeriodSeconds: 30
+        tolerations:
+        - effect: NoSchedule
+          key: kubernetes.io/arch
+          operator: Equal
+          value: amd64
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: hello-app-config-v2
+          name: config
+  status:
+    availableReplicas: 3
+    conditions:
+    - lastTransitionTime: "2025-11-15T09:55:43Z"
+      lastUpdateTime: "2025-11-15T09:55:43Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-11-15T09:55:34Z"
+      lastUpdateTime: "2025-11-15T09:55:43Z"
+      message: ReplicaSet "hello-app-v2-8459dc7fc7" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 3
+    replicas: 3
+    updatedReplicas: 3
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""
