@@ -78,14 +78,23 @@ jobs:
         with:
           version: 'v1.21.3'
 
-      - name: Configure kubectl
+      # Add Google Cloud authentication
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Get GKE credentials
         run: |
-          echo "${{ secrets.KUBE_CONFIG }}" > kubeconfig.yaml
-          export KUBECONFIG=kubeconfig.yaml
+          gcloud container clusters get-credentials hello-gitops-cluster \
+            --region=us-central1 \
+            --project=${{ secrets.GCP_PROJECT_ID }}
 
       - name: Deploy to Kubernetes
         run: |
-          export KUBECONFIG=kubeconfig.yaml
           kubectl create namespace hello-gitops --dry-run=client -o yaml | kubectl apply -f -
           kubectl apply -f hello-v1.yaml
           kubectl apply -f hello-v2.yaml
