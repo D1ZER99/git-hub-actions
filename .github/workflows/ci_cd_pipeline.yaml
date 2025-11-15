@@ -107,6 +107,13 @@ jobs:
           kubectl apply -f hello-v2.yaml
           kubectl apply -f service.yaml
 
+      - name: Update resource definitions with deployment status
+        run: |
+          # Optionally update YAML files with current deployment info
+          # For example, add annotations or update image tags
+          # This ensures the repo reflects the actual deployed state
+          kubectl get deployment -n hello-gitops -o yaml > deployed-resources.yaml || true
+
       - name: Update Git repository
         run: |
           git config --global user.name 'GitHub Actions'
